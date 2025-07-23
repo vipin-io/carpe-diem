@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carpe Diem Planner</title>
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind via CDN with basic theme override -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+         colors: {
+           neutral: {
+             50:  '#fafafa',
+             100: '#f5f5f5',
+             200: '#e5e5e5',
+             300: '#d5d5d5',
+             400: '#a3a3a3',
+             500: '#737373',
+             600: '#525252',
+             700: '#404040',
+             800: '#262626',
+             900: '#171717',
+           },
+            primary: {
+              50:  '#f5f8ff',
+              100: '#e4e9ff',
+              500: '#4f46e5',
+              700: '#3730a3'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans h-screen flex flex-col bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100"></body>
+
+  <!-- App Container -->
+  <div id="app" class="flex-1 overflow-auto px-4 py-6 space-y-4"></div>
+
+  <!-- Bottom Nav -->
+  <nav class="h-16 bg-white border-t shadow-inner flex text-gray-600">
+    <button data-view="inbox" class="flex-1 flex flex-col items-center justify-center 
+       hover:text-primary-500 active:text-primary-700 
+       transition-colors">
+      <span class="material-icons">inbox</span>
+      <small>Inbox</small>
+    </button>
+    <button data-view="today" class="flex-1 flex flex-col items-center justify-center 
+       hover:text-primary-500 active:text-primary-700 
+       transition-colors">
+      <span class="material-icons">today</span>
+      <small>Today</small>
+    </button>
+    <button data-view="goals" class="flex-1 flex flex-col items-center justify-center 
+       hover:text-primary-500 active:text-primary-700 
+       transition-colors">
+      <span class="material-icons">flag</span>
+      <small>Goals</small>
+    </button>
+    <button data-view="stats" class="flex-1 flex flex-col items-center justify-center 
+       hover:text-primary-500 active:text-primary-700 
+       transition-colors">
+      <span class="material-icons">insights</span>
+      <small>Stats</small>
+    </button>
+    <button data-view="affirm" class="flex-1 flex flex-col items-center justify-center 
+       hover:text-primary-500 active:text-primary-700 
+       transition-colors">
+      <span class="material-icons">spa</span>
+      <small>Affirm</small>
+    </button>
+  </nav>
+
+  <!-- Floating “+” -->
+<button id="fab"
+  class="fixed bottom-20 right-6 bg-primary-700 text-white p-5 rounded-full shadow-2xl ring-4 ring-primary-100 ring-opacity-50 hover:bg-primary-800 focus:outline-none">
+  <span class="text-3xl">+</span>
+</button>
+
+  <!-- Material Icons CDN -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+  <!-- App Logic -->
+  <script type="module" src="./js/app.js"></script>
+  <!-- Chart.js for Stats -->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
