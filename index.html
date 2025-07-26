@@ -8,15 +8,25 @@
   <!-- Inter Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
   
   <!-- Custom Theme Styles -->
   <style>
+    /* Modern Design System */
+    :root {
+      --fab-size: 56px;
+      --nav-height: 64px;
+      --border-radius: 16px;
+      --shadow-elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      --shadow-elevation-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      --shadow-elevation-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+
     /* Default "Cosmic Gradient" Theme */
     .theme-cosmic {
-      background: linear-gradient(to bottom, #2e026d, #3b0764, #43036e, #4c0e64, #531d5c);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #ffffff;
       min-height: 100vh;
     }
@@ -29,35 +39,60 @@
       width: 100%;
       height: 100%;
       background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-      background-size: 50px 50px, 80px 80px, 120px 120px;
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.05) 3px, transparent 3px);
+      background-size: 60px 60px, 40px 40px, 80px 80px;
       pointer-events: none;
       z-index: 0;
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
     
     .theme-cosmic .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-elevation-2);
     }
     
     .theme-cosmic nav {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(30px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .theme-cosmic .nav-text {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .theme-cosmic .nav-text.active {
+      color: #ffffff;
     }
     
     .theme-cosmic #fab {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+      background: linear-gradient(135deg, #ff6b6b, #feca57);
+      box-shadow: var(--shadow-elevation-3);
+      border: none;
+    }
+    
+    .theme-cosmic h1, .theme-cosmic h2, .theme-cosmic h3 {
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    .theme-cosmic .text-content {
+      color: rgba(255, 255, 255, 0.9);
     }
 
     /* Alternate "Frosted Glass" Theme */
     .theme-glass {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(12px);
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
       min-height: 100vh;
       position: relative;
     }
@@ -69,41 +104,173 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #f0f9ff, #e0e7ff, #fef3c7, #fed7d7);
-      z-index: -1;
+      background: linear-gradient(45deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+      z-index: 0;
     }
     
     .theme-glass .card {
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-elevation-2);
     }
     
     .theme-glass nav {
       background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(30px);
       border-top: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .theme-glass .nav-text {
+      color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .theme-glass .nav-text.active {
+      color: #4f46e5;
     }
     
     .theme-glass #fab {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #4f46e5;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      box-shadow: var(--shadow-elevation-3);
+      border: none;
+    }
+    
+    .theme-glass h1, .theme-glass h2, .theme-glass h3 {
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+    
+    .theme-glass .text-content {
+      color: rgba(0, 0, 0, 0.8);
     }
 
-    /* Common card styling */
+    /* Common modern styling */
     .card {
+      border-radius: var(--border-radius);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-elevation-3);
+    }
+    
+    /* FAB Modern Styling */
+    #fab {
+      position: fixed;
+      bottom: calc(var(--nav-height) + 16px);
+      right: 20px;
+      width: var(--fab-size);
+      height: var(--fab-size);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      font-weight: 600;
+      z-index: 1000;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    
+    #fab:hover {
+      transform: scale(1.1);
+    }
+    
+    #fab:active {
+      transform: scale(0.95);
+    }
+    
+    /* Navigation Modern Styling */
+    nav {
+      height: var(--nav-height);
+    }
+    
+    .nav-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 12px;
-      transition: all 0.3s ease;
+      margin: 6px;
+    }
+    
+    .nav-button:hover {
+      transform: translateY(-2px);
+    }
+    
+    .nav-button.active {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-icon {
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+    
+    .nav-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Button Modern Styling */
+    .modern-button {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-elevation-1);
+    }
+    
+    .modern-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-elevation-2);
+    }
+    
+    /* Form Controls */
+    .checkbox-modern {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    
+    .checkbox-modern:hover {
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: scale(1.1);
     }
     
     /* Ensure content is above overlays */
     #app, nav, #fab {
       position: relative;
       z-index: 1;
+    }
+    
+    /* Typography */
+    h1, h2, h3 {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.2;
+    }
+    
+    /* Smooth scrolling */
+    * {
+      scroll-behavior: smooth;
     }
   </style>
   
@@ -143,64 +310,39 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans h-screen flex flex-col">
-
-  <!-- Theme Selector (will be added via JS) -->
-  <div id="theme-selector" class="hidden fixed top-4 right-4 z-50 card p-3 rounded-lg">
-    <div class="flex items-center space-x-4">
-      <label class="flex items-center space-x-2 text-sm">
-        <input type="radio" name="theme" value="cosmic" class="form-radio"/>
-        <span>Cosmic</span>
-      </label>
-      <label class="flex items-center space-x-2 text-sm">
-        <input type="radio" name="theme" value="glass" class="form-radio"/>
-        <span>Glass</span>
-      </label>
-    </div>
-  </div>
+<body class="font-sans h-screen flex flex-col overflow-hidden">
 
   <!-- App Container -->
-  <div id="app" class="flex-1 overflow-auto px-4 py-6 space-y-4"></div>
+  <div id="app" class="flex-1 overflow-auto px-4 py-6 space-y-4 pb-20"></div>
 
   <!-- Bottom Nav -->
-  <nav class="h-16 bg-white border-t shadow-inner flex text-gray-600">
-    <button data-view="inbox" class="flex-1 flex flex-col items-center justify-center 
-       hover:text-primary-500 active:text-primary-700 
-       transition-colors">
-      <span class="material-icons">inbox</span>
-      <small>Inbox</small>
+  <nav class="flex">
+    <button data-view="inbox" class="nav-button">
+      <span class="material-icons nav-icon">inbox</span>
+      <span class="nav-text nav-label">Inbox</span>
     </button>
-    <button data-view="today" class="flex-1 flex flex-col items-center justify-center 
-       hover:text-primary-500 active:text-primary-700 
-       transition-colors">
-      <span class="material-icons">today</span>
-      <small>Today</small>
+    <button data-view="today" class="nav-button active">
+      <span class="material-icons nav-icon">today</span>
+      <span class="nav-text nav-label">Today</span>
     </button>
-    <button data-view="goals" class="flex-1 flex flex-col items-center justify-center 
-       hover:text-primary-500 active:text-primary-700 
-       transition-colors">
-      <span class="material-icons">flag</span>
-      <small>Goals</small>
+    <button data-view="goals" class="nav-button">
+      <span class="material-icons nav-icon">flag</span>
+      <span class="nav-text nav-label">Goals</span>
     </button>
-    <button data-view="stats" class="flex-1 flex flex-col items-center justify-center 
-       hover:text-primary-500 active:text-primary-700 
-       transition-colors">
-      <span class="material-icons">insights</span>
-      <small>Stats</small>
+    <button data-view="stats" class="nav-button">
+      <span class="material-icons nav-icon">insights</span>
+      <span class="nav-text nav-label">Stats</span>
     </button>
-    <button data-view="settings" class="flex-1 flex flex-col items-center justify-center 
-       hover:text-primary-500 active:text-primary-700 
-       transition-colors">
-      <span class="material-icons">settings</span>
-      <small>Settings</small>
+    <button data-view="settings" class="nav-button">
+      <span class="material-icons nav-icon">settings</span>
+      <span class="nav-text nav-label">Settings</span>
     </button>
   </nav>
 
-  <!-- Floating "+" -->
-<button id="fab"
-  class="fixed bottom-20 right-6 text-white p-5 rounded-full shadow-2xl ring-4 ring-primary-100 ring-opacity-50 hover:bg-primary-800 focus:outline-none transition-all">
-  <span class="text-3xl">+</span>
-</button>
+  <!-- Floating Action Button -->
+  <button id="fab">
+    <span>+</span>
+  </button>
 
   <!-- Material Icons CDN -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />

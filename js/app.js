@@ -17,15 +17,30 @@ function initThemeSelector() {
     radio.checked = radio.value === savedTheme;
     radio.addEventListener('change', e => {
       // Remove old theme
-      document.body.classList.remove(`theme-${savedTheme}`);
+      const allThemes = ['cosmic', 'glass'];
+      allThemes.forEach(theme => document.body.classList.remove(`theme-${theme}`));
       // Add new theme
       const newTheme = e.target.value;
       document.body.classList.add(`theme-${newTheme}`);
       localStorage.setItem('theme', newTheme);
-      // Update saved theme variable
-      window.savedTheme = newTheme;
     });
   });
+}
+
+// Navigation Management
+function setActiveNav(viewName) {
+  document.querySelectorAll('.nav-button').forEach(btn => {
+    btn.classList.remove('active');
+    const textSpan = btn.querySelector('.nav-text');
+    if (textSpan) textSpan.classList.remove('active');
+  });
+  
+  const activeBtn = document.querySelector(`[data-view="${viewName}"]`);
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+    const textSpan = activeBtn.querySelector('.nav-text');
+    if (textSpan) textSpan.classList.add('active');
+  }
 }
 
 // --- Data Layer ---------------------------------------------------
@@ -63,35 +78,50 @@ let plannerData = loadData();
 const appEl = document.getElementById('app');
 const views = {
     inbox: () => {
+        setActiveNav('inbox');
         appEl.innerHTML = `
       <div class="space-y-6">
-        <h2 class="text-lg font-semibold mb-3">Inbox</h2>
-        <div class="card p-4">
-          <p class="text-gray-500">Quick entries will appear here.</p>
+        <h2 class="text-2xl font-bold mb-6">Inbox</h2>
+        <div class="card p-6">
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">📥</div>
+            <p class="text-content text-lg">Quick entries will appear here</p>
+            <p class="text-content opacity-70 mt-2">Use the + button to capture thoughts and ideas</p>
+          </div>
         </div>
       </div>`;
     },
 
     today: () => {
+        setActiveNav('today');
         appEl.innerHTML = `
       <div class="space-y-6">
+        <h2 class="text-2xl font-bold mb-6">Today</h2>
+        
         <!-- Habits Card -->
-        <section class="card p-4">
-          <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Habits</h2>
-          <ul class="space-y-3">
+        <section class="card p-6">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-3">⚡</span>
+            Daily Habits
+          </h3>
+          <ul class="space-y-4">
             ${plannerData.habits.map(h => `
-              <li class="flex items-center">
-                <button data-habit="${h.id}"
-                  class="mr-3 w-5 h-5 border-2 border-gray-300 rounded-sm hover:border-primary-500 transition transform active:scale-95"></button>
-                <span class="text-neutral-700 dark:text-neutral-200">${h.text}</span>
+              <li class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-all">
+                <button data-habit="${h.id}" class="checkbox-modern mr-4"></button>
+                <span class="text-content text-lg">${h.text}</span>
               </li>`).join('')}
           </ul>
         </section>
 
         <!-- Today's Tasks Card -->
-        <section class="card p-4">
-          <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Today's Tasks</h2>
-          <ul id="task-list" class="space-y-3 text-neutral-700"></ul>
+        <section class="card p-6">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-3">✓</span>
+            Today's Tasks
+          </h3>
+          <ul id="task-list" class="space-y-4"></ul>
+          ${plannerData.tasks.filter(t => t.dueDate === new Date().toISOString().slice(0, 10) && !t.done).length === 0 ? 
+            '<div class="text-center py-6"><p class="text-content opacity-70">No tasks for today. Tap + to add one!</p></div>' : ''}
         </section>
       </div>`;
         renderTasks();
@@ -109,28 +139,39 @@ const views = {
     },
 
     goals: () => {
+        setActiveNav('goals');
         appEl.innerHTML = `
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-semibold">Goals</h2>
-      <button id="add-goal"
-              class="px-3 py-1 bg-primary-500 text-white rounded hover:bg-primary-700">
-        New
-      </button>
-    </div>
-    <section class="card p-4">
-      <ul class="space-y-3">
-        ${plannerData.goals.length
+    <div class="space-y-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Goals</h2>
+        <button id="add-goal" class="modern-button">
+          <span class="mr-2">+</span> New Goal
+        </button>
+      </div>
+      <section class="card p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <span class="text-2xl mr-3">🎯</span>
+          Your Goals
+        </h3>
+        <ul class="space-y-4">
+          ${plannerData.goals.length
                 ? plannerData.goals.map(g => `
-            <li class="flex justify-between items-center">
-              <span>${g.text} <small class="text-neutral-500 dark:text-neutral-400">(${g.horizon})</small></span>
-              <button data-delete-goal="${g.id}"
-                      class="text-red-500 hover:text-red-700 transition-colors active:scale-95">
-                ✕
+            <li class="flex justify-between items-center p-4 rounded-lg hover:bg-white hover:bg-opacity-10 transition-all">
+              <div>
+                <span class="text-content text-lg font-medium">${g.text}</span>
+                <div class="text-content opacity-70 text-sm mt-1">${g.horizon} goal</div>
+              </div>
+              <button data-delete-goal="${g.id}" class="w-8 h-8 rounded-full hover:bg-red-500 hover:bg-opacity-20 flex items-center justify-center transition-all">
+                <span class="text-red-400 text-lg">×</span>
               </button>
             </li>`).join('')
-                : `<li class="text-neutral-500">No goals yet.</li>`}
-      </ul>
-    </section>`;
+                : `<li class="text-center py-8">
+                    <div class="text-4xl mb-4">🌟</div>
+                    <p class="text-content opacity-70">No goals yet. Create your first goal!</p>
+                   </li>`}
+        </ul>
+      </section>
+    </div>`;
 
         // Hook up Add Goal
         document.getElementById('add-goal').onclick = () => {
@@ -155,11 +196,18 @@ const views = {
     },
 
     stats: () => {
+        setActiveNav('stats');
         appEl.innerHTML = `
-    <section class="card p-4 mb-6">
-      <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Stats</h2>
-      <canvas id="statsChart" class="w-full h-48"></canvas>
-    </section>`;
+    <div class="space-y-6">
+      <h2 class="text-2xl font-bold mb-6">Stats</h2>
+      <section class="card p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <span class="text-2xl mr-3">📊</span>
+          7-Day Progress
+        </h3>
+        <canvas id="statsChart" class="w-full h-64"></canvas>
+      </section>
+    </div>`;
 
         // Build data for last 7 days
         const labels = [], data = [];
@@ -181,51 +229,91 @@ const views = {
                 datasets: [{
                     label: 'Completions',
                     data,
-                    backgroundColor: 'rgba(79,70,229,0.7)',
-                    borderRadius: 4,
-                    maxBarThickness: 32
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderRadius: 8,
+                    maxBarThickness: 40
                 }]
             },
             options: {
                 scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { 
+                            stepSize: 1,
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
                 },
-                plugins: { legend: { display: false } },
-                responsive: true, maintainAspectRatio: false
+                plugins: { 
+                    legend: { display: false }
+                },
+                responsive: true, 
+                maintainAspectRatio: false
             }
         });
     },
 
     settings: () => {
+        setActiveNav('settings');
         appEl.innerHTML = `
       <div class="space-y-6">
-        <h2 class="text-2xl font-semibold mb-4">Settings</h2>
+        <h2 class="text-2xl font-bold mb-6">Settings</h2>
         
         <!-- Theme Selection -->
-        <section class="card p-4">
-          <h3 class="text-lg font-semibold mb-4">Theme</h3>
-          <div class="flex items-center space-x-4">
-            <label class="flex items-center space-x-2">
-              <input type="radio" name="theme" value="cosmic" class="form-radio"/>
-              <span>Cosmic</span>
+        <section class="card p-6">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-3">🎨</span>
+            Theme
+          </h3>
+          <div class="space-y-3">
+            <label class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-all cursor-pointer">
+              <input type="radio" name="theme" value="cosmic" class="mr-4"/>
+              <div>
+                <div class="text-content font-medium">Cosmic</div>
+                <div class="text-content opacity-70 text-sm">Deep space vibes with animated stars</div>
+              </div>
             </label>
-            <label class="flex items-center space-x-2">
-              <input type="radio" name="theme" value="glass" class="form-radio"/>
-              <span>Frosted Glass</span>
+            <label class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-all cursor-pointer">
+              <input type="radio" name="theme" value="glass" class="mr-4"/>
+              <div>
+                <div class="text-content font-medium">Frosted Glass</div>
+                <div class="text-content opacity-70 text-sm">Clean and minimal aesthetic</div>
+              </div>
             </label>
           </div>
         </section>
 
         <!-- Affirmations -->
-        <section class="card p-4">
-          <h3 class="text-lg font-semibold mb-4">Daily Affirmation</h3>
+        <section class="card p-6">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-3">💭</span>
+            Daily Affirmation
+          </h3>
           <div class="space-y-4">
-            <p class="text-gray-700 italic">"${plannerData.affirmations[Math.floor(Math.random() * plannerData.affirmations.length)]?.text || 'I follow through on my plans.'}"</p>
+            <div class="p-4 rounded-lg bg-white bg-opacity-10">
+              <p class="text-content text-lg italic text-center">"${plannerData.affirmations[Math.floor(Math.random() * plannerData.affirmations.length)]?.text || 'I follow through on my plans.'}"</p>
+            </div>
             
             <div>
-              <h4 class="font-medium mb-2">How are you feeling?</h4>
-              <input type="range" id="mood" min="0" max="5" value="3" class="w-full"/>
-              <button id="save-mood" class="mt-2 px-4 py-2 bg-primary-500 text-white rounded">Save Mood</button>
+              <h4 class="text-content font-medium mb-3">How are you feeling today?</h4>
+              <input type="range" id="mood" min="0" max="5" value="3" class="w-full mb-3"/>
+              <div class="flex justify-between text-sm text-content opacity-70">
+                <span>😢</span>
+                <span>😐</span>
+                <span>😊</span>
+              </div>
+              <button id="save-mood" class="modern-button w-full mt-4">Save Mood</button>
             </div>
           </div>
         </section>
@@ -239,30 +327,40 @@ const views = {
             const v = +document.getElementById('mood').value;
             plannerData.moodLog.push({ date: new Date().toISOString().slice(0, 10), moodValue: v });
             saveData(plannerData);
-            alert('Mood saved!');
+            
+            // Show modern success feedback
+            const btn = document.getElementById('save-mood');
+            const original = btn.innerHTML;
+            btn.innerHTML = '✓ Saved!';
+            btn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+            setTimeout(() => {
+                btn.innerHTML = original;
+                btn.style.background = '';
+            }, 2000);
         };
     }
 };
 
 function renderTasks() {
     const ul = document.getElementById('task-list');
+    if (!ul) return;
+    
     ul.innerHTML = '';
     const today = new Date().toISOString().slice(0, 10);
     plannerData.tasks
         .filter(t => t.dueDate === today && !t.done)
         .forEach(t => {
             const li = document.createElement('li');
-            li.className = 'flex items-center';
+            li.className = 'flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-all';
             li.innerHTML = `
-       <button data-task="${t.id}"
-        class="mr-3 w-5 h-5 border-2 border-gray-300 rounded-sm hover:border-primary-500 transition transform active:scale-95"></button>
-        <span>${t.text}</span>
+       <button data-task="${t.id}" class="checkbox-modern mr-4"></button>
+        <span class="text-content text-lg">${t.text}</span>
       `;
             ul.appendChild(li);
             li.querySelector('[data-task]').onclick = e => {
                 const id = +e.currentTarget.getAttribute('data-task');
-                const t = plannerData.tasks.find(t => t.id === id);
-                t.done = !t.done;
+                const task = plannerData.tasks.find(t => t.id === id);
+                task.done = !task.done;
                 saveData(plannerData);
                 views.today();
             };
