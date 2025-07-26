@@ -1,0 +1,33 @@
+# GitHub App Manifest
+# Use this to quickly create your GitHub App at: https://github.com/settings/apps/new?manifest_url=<URL_TO_THIS_FILE>
+
+name: PR Digest & Decision Support
+description: Automatically analyzes pull requests and provides intelligent summaries, classifications, and review checklists using AI.
+url: https://github.com/your-username/pr-digest-app
+hook_attributes:
+  url: https://your-app.vercel.app/webhooks/github
+
+# Redirect users here after installation
+redirect_url: https://your-app.vercel.app/setup
+
+# Public app that can be installed by anyone
+public: true
+
+# Permissions required by the app
+default_permissions:
+  # Read PR content and metadata
+  pull_requests: read
+  # Read repository content to analyze diffs
+  contents: read
+  # Write check runs to post analysis results
+  checks: write
+  # Read repository metadata
+  metadata: read
+
+# Events the app will receive
+default_events:
+  - pull_request
+  - ping
+
+# Where users install the app
+default_installation_type: selected
