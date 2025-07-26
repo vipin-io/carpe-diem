@@ -11,17 +11,17 @@ if ('serviceWorker' in navigator) {
 // --- Data Layer & Categories -------------------------------------------
 const STORAGE_KEY = 'guideLifeOptimizer';
 
-// The 9 core categories as defined in the spec
+// The 9 core categories as defined in the spec with enhanced metadata
 const CATEGORIES = [
-  { id: 'mind-growth', name: 'Mind & Growth', emoji: '🧠' },
-  { id: 'health-wellness', name: 'Health & Wellness', emoji: '💚' },
-  { id: 'work-gig', name: 'Work & Side-Gig', emoji: '💼' },
-  { id: 'finances-bills', name: 'Finances & Bills', emoji: '💰' },
-  { id: 'relationships', name: 'Relationships', emoji: '❤️' },
-  { id: 'creativity-hobbies', name: 'Creativity & Hobbies', emoji: '🎨' },
-  { id: 'home-errands', name: 'Home & Errands', emoji: '🏠' },
-  { id: 'emotions-reflection', name: 'Emotions & Reflection', emoji: '🌙' },
-  { id: 'miscellaneous', name: 'Miscellaneous', emoji: '📝' }
+  { id: 'mind-growth', name: 'Mind & Growth', emoji: '🧠', shortName: 'Mind' },
+  { id: 'health-wellness', name: 'Health & Wellness', emoji: '💚', shortName: 'Health' },
+  { id: 'work-gig', name: 'Work & Side-Gig', emoji: '💼', shortName: 'Work' },
+  { id: 'finances-bills', name: 'Finances & Bills', emoji: '💰', shortName: 'Money' },
+  { id: 'relationships', name: 'Relationships', emoji: '❤️', shortName: 'People' },
+  { id: 'creativity-hobbies', name: 'Creativity & Hobbies', emoji: '🎨', shortName: 'Create' },
+  { id: 'home-errands', name: 'Home & Errands', emoji: '🏠', shortName: 'Home' },
+  { id: 'emotions-reflection', name: 'Emotions & Reflection', emoji: '🌙', shortName: 'Reflect' },
+  { id: 'miscellaneous', name: 'Miscellaneous', emoji: '📝', shortName: 'Other' }
 ];
 
 function loadData() {
@@ -82,25 +82,91 @@ function needsMorningRitual() {
   return !guideData.lastMorningRitual || guideData.lastMorningRitual !== today;
 }
 
-// Generate category pills HTML
+// Enhanced category pills with animations and accessibility
 function generateCategoryPills(containerSelector, selectedCategories = []) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
   
+  // Add fade-in animation to container
+  container.style.opacity = '0';
+  container.style.transform = 'translateY(20px)';
+  
   container.innerHTML = CATEGORIES.map(cat => `
-    <div class="category-pill ${selectedCategories.includes(cat.id) ? 'selected' : ''}" 
-         data-category="${cat.id}">
-      ${cat.emoji} ${cat.name}
+    <div class="category-pill" 
+         data-category="${cat.id}"
+         role="button"
+         tabindex="0"
+         aria-pressed="${selectedCategories.includes(cat.id)}"
+         aria-label="Select ${cat.name} category"
+         ${selectedCategories.includes(cat.id) ? 'data-selected="true"' : ''}>
+      <span aria-hidden="true">${cat.emoji}</span>
+      <span>${cat.shortName}</span>
     </div>
   `).join('');
   
-  // Add click handlers
-  container.querySelectorAll('.category-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
+  // Animate container in
+  requestAnimationFrame(() => {
+    container.style.transition = 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+    container.style.opacity = '1';
+    container.style.transform = 'translateY(0)';
+  });
+  
+  // Add enhanced click handlers with animations
+  container.querySelectorAll('.category-pill').forEach((pill, index) => {
+    // Apply selected state if needed
+    if (selectedCategories.includes(pill.dataset.category)) {
+      pill.classList.add('selected');
+    }
+    
+    // Stagger animation for pills
+    pill.style.animationDelay = `${index * 50}ms`;
+    pill.style.animation = 'chipFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+    
+    // Enhanced click handler
+    const handleSelect = () => {
+      const wasSelected = pill.classList.contains('selected');
       pill.classList.toggle('selected');
+      pill.setAttribute('aria-pressed', !wasSelected);
+      
+      // Trigger pulse animation
+      pill.style.animation = 'chipPulse 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+      
+      // Reset animation after completion
+      setTimeout(() => {
+        pill.style.animation = '';
+      }, 200);
+      
+      // Haptic feedback on supported devices
+      if (navigator.vibrate) {
+        navigator.vibrate(10);
+      }
+    };
+    
+    pill.addEventListener('click', handleSelect);
+    pill.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleSelect();
+      }
     });
   });
 }
+
+// Add CSS animation for chips
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+  @keyframes chipFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+`;
+document.head.appendChild(styleSheet);
 
 // Get selected categories from pills
 function getSelectedCategories(containerSelector) {
@@ -687,8 +753,71 @@ function hideAllModals() {
   // Clear category selections
   document.querySelectorAll('.category-pill').forEach(pill => {
     pill.classList.remove('selected');
+    pill.setAttribute('aria-pressed', 'false');
   });
 }
+
+// Enhanced Start Day button with loading state
+function handleStartDay() {
+  const btn = document.getElementById('morning-save');
+  const mood = parseInt(document.getElementById('morning-mood').value);
+  const intention = document.getElementById('morning-intention').value.trim();
+  
+  if (!intention) {
+    // Focus on the intention field with a gentle shake
+    const intentionField = document.getElementById('morning-intention');
+    intentionField.focus();
+    intentionField.style.animation = 'shake 0.5s ease-in-out';
+    setTimeout(() => {
+      intentionField.style.animation = '';
+    }, 500);
+    return;
+  }
+  
+  // Show loading state
+  btn.classList.add('loading');
+  btn.textContent = '';
+  
+  // Simulate processing time for better UX
+  setTimeout(() => {
+    const categories = getSelectedCategories('#morning-categories');
+    const morningRitual = {
+      date: getTodayString(),
+      mood: mood,
+      intention: intention,
+      categories: categories,
+      createdAt: new Date().toISOString()
+    };
+    
+    guideData.morningRituals.push(morningRitual);
+    guideData.lastMorningRitual = getTodayString();
+    saveData(guideData);
+    
+    // Show success state
+    btn.classList.remove('loading');
+    btn.classList.add('success');
+    btn.textContent = '';
+    
+    // Close modal after success animation
+    setTimeout(() => {
+      hideAllModals();
+      btn.classList.remove('success');
+      btn.textContent = 'Start My Day';
+      renderGround();
+    }, 1500);
+  }, 1000);
+}
+
+// Add shake animation
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+`;
+document.head.appendChild(shakeStyle);
 
 // --- Views Object ------------------------------------------------
 const views = {
@@ -736,28 +865,8 @@ document.getElementById('capture-save').addEventListener('click', () => {
   views[guideData.currentView]();
 });
 
-// Morning Ritual Events
-document.getElementById('morning-save').addEventListener('click', () => {
-  const mood = parseInt(document.getElementById('morning-mood').value);
-  const intention = document.getElementById('morning-intention').value.trim();
-  if (!intention) return;
-  
-  const categories = getSelectedCategories('#morning-categories');
-  const morningRitual = {
-    date: getTodayString(),
-    mood: mood,
-    intention: intention,
-    categories: categories,
-    createdAt: new Date().toISOString()
-  };
-  
-  guideData.morningRituals.push(morningRitual);
-  guideData.lastMorningRitual = getTodayString();
-  saveData(guideData);
-  hideAllModals();
-  
-  renderGround();
-});
+// Enhanced Morning Ritual Events
+document.getElementById('morning-save').addEventListener('click', handleStartDay);
 
 // Goal Modal Events
 document.getElementById('goal-cancel').addEventListener('click', hideAllModals);
