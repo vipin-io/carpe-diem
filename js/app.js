@@ -8,6 +8,26 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// Theme Management
+const savedTheme = localStorage.getItem('theme') || 'cosmic';
+document.body.classList.add(`theme-${savedTheme}`);
+
+function initThemeSelector() {
+  document.querySelectorAll('input[name="theme"]').forEach(radio => {
+    radio.checked = radio.value === savedTheme;
+    radio.addEventListener('change', e => {
+      // Remove old theme
+      document.body.classList.remove(`theme-${savedTheme}`);
+      // Add new theme
+      const newTheme = e.target.value;
+      document.body.classList.add(`theme-${newTheme}`);
+      localStorage.setItem('theme', newTheme);
+      // Update saved theme variable
+      window.savedTheme = newTheme;
+    });
+  });
+}
+
 // --- Data Layer ---------------------------------------------------
 const STORAGE_KEY = 'plannerData';
 
@@ -46,31 +66,32 @@ const views = {
         appEl.innerHTML = `
       <div class="space-y-6">
         <h2 class="text-lg font-semibold mb-3">Inbox</h2>
-        <p class="text-gray-500">Quick entries will appear here.</p>
+        <div class="card p-4">
+          <p class="text-gray-500">Quick entries will appear here.</p>
+        </div>
       </div>`;
     },
 
     today: () => {
-
         appEl.innerHTML = `
       <div class="space-y-6">
         <!-- Habits Card -->
-              <section class="bg-neutral-50 dark:bg-neutral-800 rounded-lg shadow p-4">
-        <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Habits</h2>
-         <ul class="space-y-3">
+        <section class="card p-4">
+          <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Habits</h2>
+          <ul class="space-y-3">
             ${plannerData.habits.map(h => `
               <li class="flex items-center">
                 <button data-habit="${h.id}"
-        class="mr-3 w-5 h-5 border-2 border-gray-300 rounded-sm hover:border-primary-500 transition transform active:scale-95"></button>
+                  class="mr-3 w-5 h-5 border-2 border-gray-300 rounded-sm hover:border-primary-500 transition transform active:scale-95"></button>
                 <span class="text-neutral-700 dark:text-neutral-200">${h.text}</span>
               </li>`).join('')}
           </ul>
         </section>
 
-        <!-- Today’s Tasks Card -->
-       <section class="bg-neutral-50 dark:bg-neutral-800 rounded-lg shadow p-4">
-         <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Today’s Tasks</h2>
-         <ul id="task-list" class="space-y-3 text-neutral-700"></ul>
+        <!-- Today's Tasks Card -->
+        <section class="card p-4">
+          <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Today's Tasks</h2>
+          <ul id="task-list" class="space-y-3 text-neutral-700"></ul>
         </section>
       </div>`;
         renderTasks();
@@ -85,7 +106,6 @@ const views = {
                 views.today();
             };
         });
-
     },
 
     goals: () => {
@@ -97,7 +117,7 @@ const views = {
         New
       </button>
     </div>
-    <section class="bg-neutral-50 dark:bg-neutral-800 rounded-lg shadow p-4">
+    <section class="card p-4">
       <ul class="space-y-3">
         ${plannerData.goals.length
                 ? plannerData.goals.map(g => `
@@ -122,21 +142,21 @@ const views = {
             saveData(plannerData);
             views.goals();
         };
-        +
-            // Hook up Delete Goal
-            document.querySelectorAll('[data-delete-goal]').forEach(btn => {
-                btn.onclick = e => {
-                    const id = +e.currentTarget.getAttribute('data-delete-goal');
-                    plannerData.goals = plannerData.goals.filter(g => g.id !== id);
-                    saveData(plannerData);
-                    views.goals();
-                };
-            });
+
+        // Hook up Delete Goal
+        document.querySelectorAll('[data-delete-goal]').forEach(btn => {
+            btn.onclick = e => {
+                const id = +e.currentTarget.getAttribute('data-delete-goal');
+                plannerData.goals = plannerData.goals.filter(g => g.id !== id);
+                saveData(plannerData);
+                views.goals();
+            };
+        });
     },
 
     stats: () => {
         appEl.innerHTML = `
-    <section class="bg-neutral-50 dark:bg-neutral-800 rounded-lg shadow p-4 mb-6">
+    <section class="card p-4 mb-6">
       <h2 class="text-2xl font-semibold mb-4 border-b border-neutral-200 dark:border-neutral-700 pb-2">Stats</h2>
       <canvas id="statsChart" class="w-full h-48"></canvas>
     </section>`;
@@ -151,7 +171,7 @@ const views = {
             // Count tasks done on this date habits done
             const tasksDone = plannerData.tasks.filter(t => t.done && t.dueDate === key).length;
             const habitsDone = plannerData.habits.filter(h => h.lastDoneDate === key).length;
-            data.push(tasksDone, habitsDone);
+            data.push(tasksDone + habitsDone);
         }
         // Render Chart.js bar
         new Chart(document.getElementById('statsChart').getContext('2d'), {
@@ -176,22 +196,45 @@ const views = {
         });
     },
 
-    affirm: () => {
-        // Pick a random affirmation
-        const idx = Math.floor(Math.random() * plannerData.affirmations.length);
-        const text = plannerData.affirmations[idx]?.text || '';
+    settings: () => {
         appEl.innerHTML = `
       <div class="space-y-6">
-        <h2 class="text-lg font-semibold">Affirmation</h2>
-        <p class="text-gray-700 italic">"${text}"</p>
-        <div>
-          <h3 class="font-medium mb-2">How are you feeling?</h3>
-          <input type="range" id="mood" min="0" max="5" value="3"
-                 class="w-full"/>
-          <button id="save-mood"
-                  class="mt-2 px-4 py-2 bg-primary-500 text-white rounded">Save Mood</button>
-        </div>
+        <h2 class="text-2xl font-semibold mb-4">Settings</h2>
+        
+        <!-- Theme Selection -->
+        <section class="card p-4">
+          <h3 class="text-lg font-semibold mb-4">Theme</h3>
+          <div class="flex items-center space-x-4">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="theme" value="cosmic" class="form-radio"/>
+              <span>Cosmic</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="theme" value="glass" class="form-radio"/>
+              <span>Frosted Glass</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- Affirmations -->
+        <section class="card p-4">
+          <h3 class="text-lg font-semibold mb-4">Daily Affirmation</h3>
+          <div class="space-y-4">
+            <p class="text-gray-700 italic">"${plannerData.affirmations[Math.floor(Math.random() * plannerData.affirmations.length)]?.text || 'I follow through on my plans.'}"</p>
+            
+            <div>
+              <h4 class="font-medium mb-2">How are you feeling?</h4>
+              <input type="range" id="mood" min="0" max="5" value="3" class="w-full"/>
+              <button id="save-mood" class="mt-2 px-4 py-2 bg-primary-500 text-white rounded">Save Mood</button>
+            </div>
+          </div>
+        </section>
       </div>`;
+      
+        // Initialize theme selector
+        initThemeSelector();
+        
+        // Save mood functionality
         document.getElementById('save-mood').onclick = () => {
             const v = +document.getElementById('mood').value;
             plannerData.moodLog.push({ date: new Date().toISOString().slice(0, 10), moodValue: v });
@@ -237,7 +280,7 @@ document.querySelectorAll('nav button').forEach(btn => {
 // Initialize default view
 views.today();
 
-// Floating “+” to add a task for today
+// Floating "+" to add a task for today
 document.getElementById('fab').addEventListener('click', () => {
     const text = prompt('Add a task for today:');
     if (!text) return;
@@ -245,5 +288,8 @@ document.getElementById('fab').addEventListener('click', () => {
     const dueDate = new Date().toISOString().slice(0, 10);
     plannerData.tasks.push({ id, text, dueDate, tags: [], done: false });
     saveData(plannerData);
-    if (appEl.innerHTML.includes("Today’s Tasks")) renderTasks();
+    if (appEl.innerHTML.includes("Today's Tasks")) renderTasks();
 });
+
+// Initialize theme on page load
+window.savedTheme = savedTheme;
