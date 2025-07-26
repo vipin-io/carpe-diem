@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carpe Diem Planner</title>
+  <title>Life Vault - Memories, Present & Future</title>
 
   <!-- Inter Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
   
@@ -24,149 +24,133 @@
       --shadow-elevation-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     }
 
-    /* Default "Cosmic Gradient" Theme */
-    .theme-cosmic {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Dark Theme matching the mockup */
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
       color: #ffffff;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
     }
     
-    .theme-cosmic #app::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.05) 3px, transparent 3px);
-      background-size: 60px 60px, 40px 40px, 80px 80px;
-      pointer-events: none;
-      z-index: 0;
-      animation: float 20s ease-in-out infinite;
+    /* Category Filter Pills */
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 16px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    .filter-pills::-webkit-scrollbar {
+      display: none;
     }
     
-    .theme-cosmic .card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: var(--shadow-elevation-2);
-    }
-    
-    .theme-cosmic nav {
+    .filter-pill {
       background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(30px);
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .theme-cosmic .nav-text {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
       color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      min-width: max-content;
     }
     
-    .theme-cosmic .nav-text.active {
-      color: #ffffff;
-    }
-    
-    .theme-cosmic #fab {
-      background: linear-gradient(135deg, #ff6b6b, #feca57);
-      box-shadow: var(--shadow-elevation-3);
-      border: none;
-    }
-    
-    .theme-cosmic h1, .theme-cosmic h2, .theme-cosmic h3 {
-      color: #ffffff;
-      font-weight: 600;
-    }
-    
-    .theme-cosmic .text-content {
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    /* Alternate "Frosted Glass" Theme */
-    .theme-glass {
-      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-      min-height: 100vh;
-      position: relative;
-    }
-    
-    .theme-glass::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, 
-        rgba(255, 255, 255, 0.1) 0%, 
-        rgba(255, 255, 255, 0.05) 50%, 
-        rgba(255, 255, 255, 0.1) 100%);
-      z-index: 0;
-    }
-    
-    .theme-glass .card {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: var(--shadow-elevation-2);
-    }
-    
-    .theme-glass nav {
+    .filter-pill.active {
       background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(30px);
-      border-top: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
     }
     
-    .theme-glass .nav-text {
-      color: rgba(0, 0, 0, 0.7);
-    }
-    
-    .theme-glass .nav-text.active {
-      color: #4f46e5;
-    }
-    
-    .theme-glass #fab {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      box-shadow: var(--shadow-elevation-3);
-      border: none;
-    }
-    
-    .theme-glass h1, .theme-glass h2, .theme-glass h3 {
-      color: #1a1a1a;
-      font-weight: 600;
-    }
-    
-    .theme-glass .text-content {
-      color: rgba(0, 0, 0, 0.8);
+    .filter-pill:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
     }
 
-    /* Common modern styling */
-    .card {
-      border-radius: var(--border-radius);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Card Grid Layout */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 0 16px 100px 16px;
     }
     
-    .card:hover {
-      transform: translateY(-2px);
+    .memory-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .memory-card:hover {
+      transform: translateY(-4px);
       box-shadow: var(--shadow-elevation-3);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .memory-card.large {
+      grid-column: span 2;
+    }
+    
+    /* Category Colors */
+    .category-work { background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 197, 94, 0.1)); }
+    .category-health { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.1)); }
+    .category-home { background: linear-gradient(135deg, rgba(251, 113, 133, 0.2), rgba(236, 72, 153, 0.1)); }
+    .category-relationships { background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(147, 51, 234, 0.1)); }
+    .category-hobbies { background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1)); }
+    .category-commitments { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); }
+    
+    .category-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .category-work .category-tag { background: rgba(74, 222, 128, 0.3); }
+    .category-health .category-tag { background: rgba(34, 197, 94, 0.3); }
+    .category-home .category-tag { background: rgba(251, 113, 133, 0.3); }
+    .category-relationships .category-tag { background: rgba(168, 85, 247, 0.3); }
+    .category-hobbies .category-tag { background: rgba(251, 191, 36, 0.3); }
+    .category-commitments .category-tag { background: rgba(59, 130, 246, 0.3); }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    
+    .card-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 4px;
     }
     
     /* FAB Modern Styling */
     #fab {
       position: fixed;
-      bottom: calc(var(--nav-height) + 16px);
-      right: 20px;
+      bottom: 24px;
+      right: 24px;
       width: var(--fab-size);
       height: var(--fab-size);
       border-radius: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -176,6 +160,8 @@
       z-index: 1000;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+      border: none;
+      box-shadow: var(--shadow-elevation-3);
     }
     
     #fab:hover {
@@ -186,170 +172,309 @@
       transform: scale(0.95);
     }
     
-    /* Navigation Modern Styling */
-    nav {
-      height: var(--nav-height);
+    /* Bottom Navigation - Hidden for now */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(30px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 16px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
     
-    .nav-button {
+    .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      flex: 1;
-      padding: 8px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 8px 12px;
       border-radius: 12px;
-      margin: 6px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.6);
     }
     
-    .nav-button:hover {
-      transform: translateY(-2px);
-    }
-    
-    .nav-button.active {
+    .nav-item.active {
+      color: #ffffff;
       background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
     }
     
     .nav-icon {
       font-size: 20px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
     
     .nav-label {
       font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.5px;
     }
     
-    /* Button Modern Styling */
-    .modern-button {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 24px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: rgba(102, 126, 234, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px 24px;
       border: none;
       border-radius: 12px;
-      padding: 12px 24px;
       font-weight: 600;
       font-size: 14px;
-      letter-spacing: 0.5px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: var(--shadow-elevation-1);
-    }
-    
-    .modern-button:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-elevation-2);
-    }
-    
-    /* Form Controls */
-    .checkbox-modern {
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 6px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+      transition: all 0.3s ease;
     }
     
-    .checkbox-modern:hover {
-      border-color: rgba(255, 255, 255, 0.6);
-      transform: scale(1.1);
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
     }
     
-    /* Ensure content is above overlays */
-    #app, nav, #fab {
-      position: relative;
-      z-index: 1;
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    /* Typography */
-    h1, h2, h3 {
-      font-family: 'Inter', sans-serif;
-      line-height: 1.2;
+    .btn:hover {
+      transform: translateY(-2px);
     }
     
-    /* Smooth scrolling */
-    * {
-      scroll-behavior: smooth;
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(30px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .header-content {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .app-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .header-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .header-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
     }
   </style>
   
-  <!-- Tailwind via CDN with basic theme override -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-         colors: {
-           neutral: {
-             50:  '#fafafa',
-             100: '#f5f5f5',
-             200: '#e5e5e5',
-             300: '#d5d5d5',
-             400: '#a3a3a3',
-             500: '#737373',
-             600: '#525252',
-             700: '#404040',
-             800: '#262626',
-             900: '#171717',
-           },
-            primary: {
-              50:  '#f5f8ff',
-              100: '#e4e9ff',
-              500: '#4f46e5',
-              700: '#3730a3'
-            }
-          }
-        }
-      }
-    }
-  </script>
-
+  <!-- Tailwind via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="font-sans h-screen flex flex-col overflow-hidden">
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1 class="app-title">Life Vault</h1>
+      <div class="header-actions">
+        <button class="header-btn" id="settings-btn">⚙️</button>
+        <button class="header-btn" id="menu-btn">⋯</button>
+      </div>
+    </div>
+  </div>
 
-  <!-- App Container -->
-  <div id="app" class="flex-1 overflow-auto px-4 py-6 space-y-4 pb-20"></div>
+  <!-- Category Filters -->
+  <div class="filter-pills">
+    <button class="filter-pill active" data-filter="all">All</button>
+    <button class="filter-pill" data-filter="tue">Tue</button>
+    <button class="filter-pill" data-filter="10">10</button>
+    <button class="filter-pill" data-filter="wed">Wed</button>
+    <button class="filter-pill" data-filter="th">Th</button>
+    <button class="filter-pill" data-filter="sat">Sat</button>
+    <button class="filter-pill" data-filter="sun">Sun</button>
+  </div>
 
-  <!-- Bottom Nav -->
-  <nav class="flex">
-    <button data-view="inbox" class="nav-button">
-      <span class="material-icons nav-icon">inbox</span>
-      <span class="nav-text nav-label">Inbox</span>
-    </button>
-    <button data-view="today" class="nav-button active">
-      <span class="material-icons nav-icon">today</span>
-      <span class="nav-text nav-label">Today</span>
-    </button>
-    <button data-view="goals" class="nav-button">
-      <span class="material-icons nav-icon">flag</span>
-      <span class="nav-text nav-label">Goals</span>
-    </button>
-    <button data-view="stats" class="nav-button">
-      <span class="material-icons nav-icon">insights</span>
-      <span class="nav-text nav-label">Stats</span>
-    </button>
-    <button data-view="settings" class="nav-button">
-      <span class="material-icons nav-icon">settings</span>
-      <span class="nav-text nav-label">Settings</span>
-    </button>
-  </nav>
+  <!-- Category Filters Row 2 -->
+  <div class="filter-pills" style="padding-top: 0;">
+    <button class="filter-pill" data-filter="work">Work</button>
+    <button class="filter-pill" data-filter="health">Health</button>
+    <button class="filter-pill" data-filter="home">Home</button>
+    <button class="filter-pill" data-filter="relationships">Relationships</button>
+    <button class="filter-pill" data-filter="hobbies">Hobbies</button>
+    <button class="filter-pill" data-filter="commitments">Commitments</button>
+  </div>
+
+  <!-- Main Content -->
+  <div id="app" class="cards-grid"></div>
 
   <!-- Floating Action Button -->
-  <button id="fab">
-    <span>+</span>
-  </button>
+  <button id="fab">+</button>
 
-  <!-- Material Icons CDN -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- Bottom Navigation (hidden for now) -->
+  <div class="bottom-nav" style="display: none;">
+    <div class="nav-item active">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">Edit</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">✂️</div>
+      <div class="nav-label">Select</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">💾</div>
+      <div class="nav-label">Save</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">📤</div>
+      <div class="nav-label">Share</div>
+    </div>
+  </div>
+
+  <!-- Add Memory Modal -->
+  <div id="add-modal" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">Add New Memory</h3>
+      
+      <div class="form-group">
+        <label class="form-label">Title</label>
+        <input type="text" id="memory-title" class="form-input" placeholder="Enter title...">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select id="memory-category" class="form-select">
+          <option value="work">Work</option>
+          <option value="health">Health</option>
+          <option value="home">Home</option>
+          <option value="relationships">Relationships</option>
+          <option value="hobbies">Hobbies</option>
+          <option value="commitments">Commitments</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select id="memory-type" class="form-select">
+          <option value="memory">Memory (Past)</option>
+          <option value="present">Present</option>
+          <option value="future">Future Goal</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea id="memory-description" class="form-textarea" placeholder="Add details..."></textarea>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="save-btn">Save</button>
+      </div>
+    </div>
+  </div>
 
   <!-- App Logic -->
   <script type="module" src="./js/app.js"></script>
-  <!-- Chart.js for Stats -->
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

@@ -1,18 +1,20 @@
 {
-  "name": "Carpe Diem Planner",
-  "short_name": "CarpeDiem",
-  "start_url": ".",
-  "display": "standalone",        
-  "background_color": "#fafafa",
+  "name": "Life Vault",
+  "short_name": "Life Vault",
+  "description": "A vault for your memories, present moments, and future aspirations organized by life categories",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
   "theme_color": "#4f46e5",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "assets/icons/icon-512.png",
+      "src": "assets/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "assets/icons/icon-512.png",
+      "src": "assets/icons/icon-512x512.png", 
       "sizes": "512x512",
       "type": "image/png"
     }
