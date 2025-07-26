@@ -1,7 +1,7 @@
 {
-  "name": "Life Vault",
-  "short_name": "Life Vault",
-  "description": "A vault for your memories, present moments, and future aspirations organized by life categories",
+  "name": "Guide - Life Optimizer",
+  "short_name": "Guide",
+  "description": "Your Life Optimizer with three realms: Ground (present-moment anchor), Horizon (future-self compass), and Archive (past-journey map). Capture thoughts, set North Stars, and reflect through daily rituals.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",

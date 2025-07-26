@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Life Vault - Memories, Present & Future</title>
+  <title>Guide - Life Optimizer</title>
 
   <!-- Inter Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +30,8 @@
       color: #ffffff;
       min-height: 100vh;
       font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
     }
     
     /* Category Filter Pills */
@@ -61,9 +63,9 @@
     }
     
     .filter-pill.active {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(102, 126, 234, 0.3);
       color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: rgba(102, 126, 234, 0.5);
     }
     
     .filter-pill:hover {
@@ -71,82 +73,236 @@
       transform: translateY(-1px);
     }
 
-    /* Card Grid Layout */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+    /* Card System */
+    .cards-container {
       padding: 0 16px 100px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
     
-    .memory-card {
+    .card {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: var(--border-radius);
       padding: 20px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
       position: relative;
       overflow: hidden;
     }
     
-    .memory-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-elevation-3);
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-elevation-2);
       background: rgba(255, 255, 255, 0.15);
     }
     
-    .memory-card.large {
-      grid-column: span 2;
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
     }
     
-    /* Category Colors */
-    .category-work { background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 197, 94, 0.1)); }
-    .category-health { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.1)); }
-    .category-home { background: linear-gradient(135deg, rgba(251, 113, 133, 0.2), rgba(236, 72, 153, 0.1)); }
-    .category-relationships { background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(147, 51, 234, 0.1)); }
-    .category-hobbies { background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1)); }
-    .category-commitments { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); }
-    
-    .category-tag {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 12px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+    .card-icon {
+      font-size: 24px;
+      margin-right: 12px;
     }
-    
-    .category-work .category-tag { background: rgba(74, 222, 128, 0.3); }
-    .category-health .category-tag { background: rgba(34, 197, 94, 0.3); }
-    .category-home .category-tag { background: rgba(251, 113, 133, 0.3); }
-    .category-relationships .category-tag { background: rgba(168, 85, 247, 0.3); }
-    .category-hobbies .category-tag { background: rgba(251, 191, 36, 0.3); }
-    .category-commitments .category-tag { background: rgba(59, 130, 246, 0.3); }
     
     .card-title {
       font-size: 18px;
       font-weight: 600;
       color: #ffffff;
-      margin-bottom: 8px;
-      line-height: 1.3;
+      margin: 0;
     }
     
     .card-subtitle {
       font-size: 14px;
       color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 4px;
+      margin: 4px 0 0 0;
     }
     
-    /* FAB Modern Styling */
+    /* Mood Slider */
+    .mood-slider {
+      width: 100%;
+      margin: 16px 0;
+      position: relative;
+    }
+    
+    .mood-input {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #ef4444, #f59e0b, #10b981);
+      outline: none;
+      -webkit-appearance: none;
+    }
+    
+    .mood-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+      box-shadow: var(--shadow-elevation-2);
+    }
+    
+    .mood-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+    
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: rgba(102, 126, 234, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    /* Category Pills */
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    
+    .category-pill {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .category-pill.selected {
+      background: rgba(102, 126, 234, 0.3);
+      border-color: rgba(102, 126, 234, 0.5);
+      color: #ffffff;
+    }
+    
+    /* Task/Habit Items */
+    .task-item, .habit-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .task-item:last-child, .habit-item:last-child {
+      border-bottom: none;
+    }
+    
+    .task-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      margin-right: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .task-checkbox.completed {
+      background: rgba(102, 126, 234, 0.3);
+      border-color: rgba(102, 126, 234, 0.5);
+    }
+    
+    .task-checkbox.completed::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .task-text {
+      flex: 1;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+    }
+    
+    .task-text.completed {
+      text-decoration: line-through;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    /* FAB */
     #fab {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: calc(var(--nav-height) + 16px);
+      right: 20px;
       width: var(--fab-size);
       height: var(--fab-size);
       border-radius: 16px;
@@ -168,23 +324,20 @@
       transform: scale(1.1);
     }
     
-    #fab:active {
-      transform: scale(0.95);
-    }
-    
-    /* Bottom Navigation - Hidden for now */
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
+      height: var(--nav-height);
       background: rgba(26, 26, 46, 0.95);
       backdrop-filter: blur(30px);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 12px 16px 20px;
       display: flex;
       justify-content: space-around;
       align-items: center;
+      z-index: 999;
     }
     
     .nav-item {
@@ -196,6 +349,8 @@
       transition: all 0.3s ease;
       cursor: pointer;
       color: rgba(255, 255, 255, 0.6);
+      flex: 1;
+      text-align: center;
     }
     
     .nav-item.active {
@@ -252,41 +407,15 @@
       overflow-y: auto;
     }
     
-    .form-group {
-      margin-bottom: 16px;
+    .modal-header {
+      margin-bottom: 20px;
     }
     
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .form-input,
-    .form-textarea,
-    .form-select {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
       color: #ffffff;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    .form-input:focus,
-    .form-textarea:focus,
-    .form-select:focus {
-      outline: none;
-      border-color: rgba(102, 126, 234, 0.5);
-      background: rgba(255, 255, 255, 0.15);
-    }
-    
-    .form-textarea {
-      resize: vertical;
-      min-height: 80px;
+      margin: 0;
     }
     
     .button-group {
@@ -295,181 +424,228 @@
       margin-top: 24px;
     }
     
-    .btn {
+    .button-group .btn {
       flex: 1;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
     }
     
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+    /* Archive Timeline */
+    .timeline-item {
+      border-left: 2px solid rgba(255, 255, 255, 0.2);
+      padding: 16px 0 16px 16px;
+      margin-left: 12px;
+      position: relative;
     }
     
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(102, 126, 234, 0.8);
+    }
+    
+    .timeline-date {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 8px;
+    }
+    
+    .timeline-content {
       color: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 14px;
+      line-height: 1.4;
     }
     
-    .btn:hover {
-      transform: translateY(-2px);
+    /* Gentle Echo */
+    .gentle-echo {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      margin-bottom: 20px;
     }
     
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(26, 26, 46, 0.95);
-      backdrop-filter: blur(30px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    .echo-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
-    .header-content {
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Stats Chart */
+    .stats-chart {
+      height: 200px;
+      margin: 16px 0;
     }
     
-    .app-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .header-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
-    
-    .header-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards-container {
+        padding: 0 12px 100px 12px;
+      }
+      
+      .filter-pills {
+        padding: 12px;
+      }
     }
   </style>
-  
-  <!-- Tailwind via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <!-- Header -->
-  <div class="header">
-    <div class="header-content">
-      <h1 class="app-title">Life Vault</h1>
-      <div class="header-actions">
-        <button class="header-btn" id="settings-btn">⚙️</button>
-        <button class="header-btn" id="menu-btn">⋯</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Category Filters -->
-  <div class="filter-pills">
-    <button class="filter-pill active" data-filter="all">All</button>
-    <button class="filter-pill" data-filter="tue">Tue</button>
-    <button class="filter-pill" data-filter="10">10</button>
-    <button class="filter-pill" data-filter="wed">Wed</button>
-    <button class="filter-pill" data-filter="th">Th</button>
-    <button class="filter-pill" data-filter="sat">Sat</button>
-    <button class="filter-pill" data-filter="sun">Sun</button>
-  </div>
-
-  <!-- Category Filters Row 2 -->
-  <div class="filter-pills" style="padding-top: 0;">
-    <button class="filter-pill" data-filter="work">Work</button>
-    <button class="filter-pill" data-filter="health">Health</button>
-    <button class="filter-pill" data-filter="home">Home</button>
-    <button class="filter-pill" data-filter="relationships">Relationships</button>
-    <button class="filter-pill" data-filter="hobbies">Hobbies</button>
-    <button class="filter-pill" data-filter="commitments">Commitments</button>
-  </div>
-
   <!-- Main Content -->
-  <div id="app" class="cards-grid"></div>
+  <div id="app" class="cards-container"></div>
 
   <!-- Floating Action Button -->
   <button id="fab">+</button>
 
-  <!-- Bottom Navigation (hidden for now) -->
-  <div class="bottom-nav" style="display: none;">
-    <div class="nav-item active">
-      <div class="nav-icon">🏠</div>
-      <div class="nav-label">Edit</div>
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-item active" data-view="ground">
+      <div class="nav-icon">🏞️</div>
+      <div class="nav-label">Ground</div>
     </div>
-    <div class="nav-item">
-      <div class="nav-icon">✂️</div>
-      <div class="nav-label">Select</div>
+    <div class="nav-item" data-view="horizon">
+      <div class="nav-icon">🌅</div>
+      <div class="nav-label">Horizon</div>
     </div>
-    <div class="nav-item">
-      <div class="nav-icon">💾</div>
-      <div class="nav-label">Save</div>
+    <div class="nav-item" data-view="archive">
+      <div class="nav-icon">🗄️</div>
+      <div class="nav-label">Archive</div>
     </div>
-    <div class="nav-item">
-      <div class="nav-icon">📤</div>
-      <div class="nav-label">Share</div>
+    <div class="nav-item" data-view="stats">
+      <div class="nav-icon">📊</div>
+      <div class="nav-label">Stats</div>
+    </div>
+    <div class="nav-item" data-view="evening">
+      <div class="nav-icon">🌙</div>
+      <div class="nav-label">Evening</div>
     </div>
   </div>
 
-  <!-- Add Memory Modal -->
-  <div id="add-modal" class="modal">
+  <!-- Capture Modal -->
+  <div id="capture-modal" class="modal">
     <div class="modal-content">
-      <h3 style="margin-bottom: 20px; font-size: 18px; font-weight: 600;">Add New Memory</h3>
+      <div class="modal-header">
+        <h3 class="modal-title">Capture Net</h3>
+      </div>
       
       <div class="form-group">
-        <label class="form-label">Title</label>
-        <input type="text" id="memory-title" class="form-input" placeholder="Enter title...">
+        <label class="form-label">What's on your mind?</label>
+        <textarea id="capture-text" class="form-textarea" placeholder="Capture any thought, idea, or task..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Categories</label>
+        <div class="category-pills" id="capture-categories">
+          <!-- Categories will be populated by JS -->
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-secondary" id="capture-cancel">Cancel</button>
+        <button class="btn btn-primary" id="capture-save">Capture</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Morning Ritual Modal -->
+  <div id="morning-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Good Morning! How are you arriving today?</h3>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Mood (1-5)</label>
+        <div class="mood-slider">
+          <input type="range" id="morning-mood" class="mood-input" min="1" max="5" value="3">
+          <div class="mood-labels">
+            <span>😢 Low</span>
+            <span>😐 Neutral</span>
+            <span>😊 Great</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Core Intention for Today</label>
+        <textarea id="morning-intention" class="form-textarea" placeholder="What's your focus for today?"></textarea>
       </div>
       
       <div class="form-group">
         <label class="form-label">Category</label>
-        <select id="memory-category" class="form-select">
-          <option value="work">Work</option>
-          <option value="health">Health</option>
-          <option value="home">Home</option>
-          <option value="relationships">Relationships</option>
-          <option value="hobbies">Hobbies</option>
-          <option value="commitments">Commitments</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Type</label>
-        <select id="memory-type" class="form-select">
-          <option value="memory">Memory (Past)</option>
-          <option value="present">Present</option>
-          <option value="future">Future Goal</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Description</label>
-        <textarea id="memory-description" class="form-textarea" placeholder="Add details..."></textarea>
+        <div class="category-pills" id="morning-categories">
+          <!-- Categories will be populated by JS -->
+        </div>
       </div>
       
       <div class="button-group">
-        <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
-        <button class="btn btn-primary" id="save-btn">Save</button>
+        <button class="btn btn-primary" id="morning-save">Start Day</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goal Modal -->
+  <div id="goal-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">New North Star</h3>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Goal Title</label>
+        <input type="text" id="goal-title" class="form-input" placeholder="e.g., Learn Spanish">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Why does this matter?</label>
+        <textarea id="goal-why" class="form-textarea" placeholder="Your deeper motivation..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Horizon</label>
+        <select id="goal-horizon" class="form-select">
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <div class="category-pills" id="goal-categories">
+          <!-- Categories will be populated by JS -->
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-secondary" id="goal-cancel">Cancel</button>
+        <button class="btn btn-primary" id="goal-save">Create Goal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Evening Ritual Modal -->
+  <div id="evening-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Evening Reflection</h3>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">What are you grateful for today?</label>
+        <textarea id="evening-grateful" class="form-textarea" placeholder="Reflect on the good moments..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">What are you ready to let go of?</label>
+        <textarea id="evening-letgo" class="form-textarea" placeholder="Release what no longer serves you..."></textarea>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn btn-secondary" id="evening-cancel">Skip</button>
+        <button class="btn btn-primary" id="evening-save">Complete Day</button>
       </div>
     </div>
   </div>
